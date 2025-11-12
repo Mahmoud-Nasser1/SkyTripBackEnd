@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const app = express(); // creating server
+const users_router = require("../routes/users/users");
 
 require("dotenv").config();
 
@@ -14,6 +14,8 @@ mongoose
   .catch((err) => console.log("Database connection error: ", err));
 
 app.use(express.json());
+
+app.use("/api/v1/users", users_router);
 
 app.get("/", (req, res) => {
   res.status(200).json({
