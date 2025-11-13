@@ -14,7 +14,7 @@ const login = async (req, res) => {
     }
     const user = await Users.findOne({ email });
     if (!user) {
-      res.status(400).json({
+      return res.status(400).json({
         message: "The email address you entered isn't connected to an account",
         data: null,
       });
