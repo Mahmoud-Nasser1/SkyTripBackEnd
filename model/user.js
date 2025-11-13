@@ -15,7 +15,7 @@ const userModel = new mongoose.Schema(
       unique: true,
     },
     phoneNumber: {
-      type: Number,
+      type: String,
       required: true,
       unique: true,
     },
@@ -25,6 +25,10 @@ const userModel = new mongoose.Schema(
     },
     image: {
       type: String,
+    },
+    role: {
+      type: String,
+      default: "user",
     },
   },
   { timestamps: true }
