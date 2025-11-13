@@ -1,12 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-app.use(cors());
 
 const app = express(); // creating server
-const users_router = require("../routes/users/users");
 
+app.use(cors());
 require("dotenv").config();
+
+const auth_route = require("../routes/auth/auth");
+const users_router = require("../routes/users/users");
 
 const PORT = process.env.PORT || 7000;
 const DB_URL = process.env.DB_URL;
@@ -18,6 +20,7 @@ mongoose
 
 app.use(express.json());
 
+app.use("/api/v1/auth", auth_route);
 app.use("/api/v1/users", users_router);
 
 app.get("/", (req, res) => {
