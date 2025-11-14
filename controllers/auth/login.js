@@ -28,23 +28,26 @@ const login = async (req, res) => {
     }
 
     const token = jwt(
-      { id: user._id, role: user.role },
+      {
+        id: user._id,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+      },
       process.env.SECRET_KEY
     );
     res.status(200).json({
       message: "Login successful",
       data: {
         token,
-        user: {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-        },
       },
     });
   } catch (error) {
-    res.status(500).json({ message: error.message, data: null });
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
