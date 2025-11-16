@@ -36,6 +36,17 @@ const add_new_flight = async (req, res) => {
         data: null,
       });
     }
+    const flightDateObj = new Date(flightDate);
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    if (flightDateObj < today) {
+      return res.status(400).json({
+        message: "Flight date cannot be in the past",
+        data: null,
+      });
+    }
 
     const DB_FLIGHTS = await flights.find({});
 
@@ -60,7 +71,7 @@ const add_new_flight = async (req, res) => {
       arrivalCity,
       cabinClass,
       flightType,
-      flightDate,
+      flightDate: flightDateObj,
       price,
       passenger,
     });

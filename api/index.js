@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("../cron/cleanExpiredFlights");
 
 const app = express(); // creating server
 
@@ -24,7 +25,6 @@ app.use(express.json());
 app.use("/api/v1/auth", auth_route);
 app.use("/api/v1/users", users_router);
 app.use("/api/v1/flights", flights_router);
-
 
 app.get("/", (req, res) => {
   res.status(200).json({
