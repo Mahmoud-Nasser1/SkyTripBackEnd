@@ -3,13 +3,18 @@ const bcrypt = require("bcrypt");
 
 const update_user = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const updatedFields = { ...req.body };
 
     if (updatedFields.password) {
-      const hashed_password = await bcrypt.hash(updatedFields.password, 8);
-      updatedFields.password = hashed_password;
+      updatedFields.password = await bcrypt.hash(updatedFields.password, 8);
     }
+
+    Object.keys(updatedFields).forEach((key) => {
+      if (updatedFields[key] === "" && key !== "image") {
+        delete updatedFields[key];
+      }
+    });
 
     const updated_user = await User.findByIdAndUpdate(userId, updatedFields, {
       new: true,
