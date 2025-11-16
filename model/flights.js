@@ -40,7 +40,7 @@ const flightModel = new mongoose.Schema(
     },
     flightDate: {
       required: true,
-      type: String,
+      type: Date,
     },
     price: {
       required: true,
