@@ -30,6 +30,12 @@ const userModel = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    savedFlights: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Flights",
+      },
+    ],
   },
   { timestamps: true }
 );
