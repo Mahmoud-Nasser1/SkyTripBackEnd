@@ -2,6 +2,8 @@ const flights = require("../../model/flights");
 
 const get_single_flight = async (req, res) => {
   const { flightId: id } = req.params;
+  
+  
   try {
     const searched_flight = await flights.findById(id, { __v: 0 });
 
@@ -11,10 +13,11 @@ const get_single_flight = async (req, res) => {
         data: null,
       });
     }
+    
 
     return res.status(200).json({
       message: "Flight found success",
-      data: searced_flight,
+      data: searched_flight,
     });
 
   } catch (err) {
