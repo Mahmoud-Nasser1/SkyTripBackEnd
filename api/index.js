@@ -15,7 +15,7 @@ const booking_router = require("../routes/booking/booking");
 const PORT = process.env.PORT || 7000;
 const DB_URL = process.env.DB_URL;
 
-const allowOrigins = ["https://sky-trip.vercel.app/"];
+const allowOrigins = ["https://sky-trip.vercel.app"];
 app.use(
   cors({
     origin: (origin, callback) => {
