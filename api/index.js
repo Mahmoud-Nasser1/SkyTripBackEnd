@@ -20,7 +20,7 @@ mongoose
   .then(() => console.log("Database connected"))
   .catch((err) => console.log("Database connection error: ", err));
 
-app.use(express.json());
+app.use(express.json()); // to parse json request body to js object in case of post/put request
 
 app.use("/api/v1/auth", auth_route);
 app.use("/api/v1/users", users_router);
