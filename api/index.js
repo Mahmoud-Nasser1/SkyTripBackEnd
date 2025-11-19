@@ -11,6 +11,7 @@ require("dotenv").config();
 const auth_route = require("../routes/auth/auth");
 const users_router = require("../routes/users/users");
 const flights_router = require("../routes/flights/flights");
+const booking_router = require("../routes/booking/booking");
 
 const PORT = process.env.PORT || 7000;
 const DB_URL = process.env.DB_URL;
@@ -25,6 +26,7 @@ app.use(express.json()); // to parse json request body to js object in case of p
 app.use("/api/v1/auth", auth_route);
 app.use("/api/v1/users", users_router);
 app.use("/api/v1/flights", flights_router);
+app.use("/api/v1/booking", booking_router);
 
 app.get("/", (req, res) => {
   res.status(200).json({
