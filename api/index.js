@@ -5,7 +5,6 @@ require("../cron/cleanExpiredFlights");
 
 const app = express(); // creating server
 
-app.use(cors());
 require("dotenv").config();
 
 const auth_route = require("../routes/auth/auth");
@@ -15,6 +14,19 @@ const booking_router = require("../routes/booking/booking");
 
 const PORT = process.env.PORT || 7000;
 const DB_URL = process.env.DB_URL;
+
+const allowOrigins = ["https://sky-trip.vercel.app/"];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+  })
+);
 
 mongoose
   .connect(DB_URL)
