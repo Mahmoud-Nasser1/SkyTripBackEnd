@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-encode": "^1.0.1",
     "mongoose": "^8.19.3",
+    "nanoid": "^5.1.6",
     "node-cron": "^4.2.1"
   }
 }
