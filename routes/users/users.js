@@ -14,7 +14,7 @@ router.patch("/me", check_login, update_user);
 router.get("/:userId", get_one_user);
 router.put("/:userId", update_user);
 router.post("/:userId/saveflight/:flightId", saveFlightForUser);
-router.post("/:userId/unsaveflight/:flightId", unsaveFlightForUser);
-router.post("/:userId/savedflights", getSavedFlights);
+router.delete("/:userId/unsaveflight/:flightId", unsaveFlightForUser);
+router.get("/:userId/savedflights", getSavedFlights);
 
 module.exports = router;
