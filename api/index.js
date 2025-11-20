@@ -20,6 +20,19 @@ const featured_router = require("../routes/featured/featured");
 
 app.use(express.json()); // to parse json request body to js object in case of post/put request
 
+const allowOrigins = ["https://sky-trip.vercel.app"];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (allowOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(null, false);
+      }
+    },
+  })
+);
+
 mongoose
   .connect(DB_URL)
   .then(() => console.log("Database connected"))
