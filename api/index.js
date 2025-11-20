@@ -1,30 +1,34 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config();
 require("../cron/cleanExpiredFlights");
 
 const app = express(); // creating server
+const PORT = process.env.PORT || 7000;
+const DB_URL = process.env.DB_URL;
+
+
+
 
 app.use(cors());
-require("dotenv").config();
 
 const auth_route = require("../routes/auth/auth");
 const users_router = require("../routes/users/users");
 const flights_router = require("../routes/flights/flights");
+const featured_router = require("../routes/featured/featured");
 
-const PORT = process.env.PORT || 7000;
-const DB_URL = process.env.DB_URL;
+app.use(express.json()); // to parse json request body to js object in case of post/put request
 
 mongoose
   .connect(DB_URL)
   .then(() => console.log("Database connected"))
   .catch((err) => console.log("Database connection error: ", err));
 
-app.use(express.json()); // to parse json request body to js object in case of post/put request
-
 app.use("/api/v1/auth", auth_route);
 app.use("/api/v1/users", users_router);
 app.use("/api/v1/flights", flights_router);
+app.use("/api/v1/featured", featured_router);
 
 app.get("/", (req, res) => {
   res.status(200).json({
