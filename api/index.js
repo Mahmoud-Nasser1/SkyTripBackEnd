@@ -8,8 +8,6 @@ const app = express(); // creating server
 const PORT = process.env.PORT || 7000;
 const DB_URL = process.env.DB_URL;
 
-app.use(cors());
-
 const auth_route = require("../routes/auth/auth");
 const users_router = require("../routes/users/users");
 const flights_router = require("../routes/flights/flights");
