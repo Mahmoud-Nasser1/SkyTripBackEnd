@@ -16,7 +16,7 @@ const booking_router = require("../routes/booking/booking");
 
 app.use(express.json()); // to parse json request body to js object in case of post/put request
 
-const allowOrigins = ["https://sky-trip.vercel.app"];
+const allowOrigins = ["https://sky-trip.vercel.app", "http://localhost:5173"];
 app.use(
   cors({
     origin: (origin, callback) => {
