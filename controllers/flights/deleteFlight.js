@@ -1,21 +1,23 @@
-const flights = require("../../model/flights");
+const Flight = require("../../model/flights");
 
 const delete_flight = async (req, res) => {
   const { flightId: id } = req.params;
-  try {
-    const deletedFlight = await flights.findByIdAndDelete(id);
 
-    if (!deletedFlight) {
+  try {
+    const flight = await Flight.findById(id);
+    if (!flight) {
       return res.status(404).json({
         message: "Flight not found",
         data: null,
       });
     }
+
+    await flight.remove();
+
     return res.status(200).json({
       message: "Flight deleted successfully",
-      data: deletedFlight,
+      data: flight,
     });
-
   } catch (err) {
     if (err.name === "CastError") {
       return res.status(400).json({
