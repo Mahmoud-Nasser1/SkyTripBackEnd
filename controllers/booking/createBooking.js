@@ -29,20 +29,7 @@ const createBooking = async (req, res) => {
       });
     }
 
-    const existingBooking = await Booking.findOne({
-      userId,
-      bookingFlights: { $all: flightIds, $size: flightIds.length },
-    });
-
-    if (existingBooking) {
-      return res.status(400).json({
-        message: "You already booked this flight.",
-        data: existingBooking,
-      });
-    }
-
     const flights = await Flight.find({ _id: { $in: flightIds } });
-
     if (flights.length !== flightIds.length) {
       return res.status(404).json({
         message: "One or more flights not found",
@@ -51,28 +38,55 @@ const createBooking = async (req, res) => {
     }
 
     const passengers = numberOfPassengers || 1;
-
-    const totalPrice =
+    const addedPrice =
       flights.reduce((sum, flight) => sum + flight.price, 0) * passengers;
 
-    const booking = await Booking.create({
+    let existingBooking = await Booking.findOne({ userId });
+
+    if (existingBooking) {
+      const duplicateFlights = existingBooking.bookingFlights.filter((id) =>
+        flightIds.includes(id.toString())
+      );
+
+      if (duplicateFlights.length > 0) {
+        return res.status(400).json({
+          message: "You already booked one or more of these flights.",
+        });
+      }
+
+      existingBooking.bookingFlights.push(...flightIds);
+      existingBooking.totalPrice += addedPrice;
+
+      await existingBooking.save();
+
+      const updatedBooking = await Booking.findById(existingBooking._id)
+        .populate("userId", "firstName lastName email phoneNumber")
+        .populate("bookingFlights");
+
+      return res.status(200).json({
+        message: "Booking updated successfully",
+        data: updatedBooking,
+      });
+    }
+
+    const newBooking = await Booking.create({
       firstName,
       lastName,
       phoneNumber,
       passportNumber,
       userId,
       bookingFlights: flightIds,
-      totalPrice,
+      totalPrice: addedPrice,
       status: "pending",
     });
 
-    const newBooking = await Booking.findById(booking._id)
+    const result = await Booking.findById(newBooking._id)
       .populate("userId", "firstName lastName email phoneNumber")
       .populate("bookingFlights");
 
     return res.status(201).json({
       message: "Booking created successfully",
-      data: newBooking,
+      data: result,
     });
   } catch (err) {
     return res.status(500).json({
