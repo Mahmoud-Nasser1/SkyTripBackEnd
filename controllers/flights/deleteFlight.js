@@ -12,7 +12,15 @@ const delete_flight = async (req, res) => {
       });
     }
 
-    await flight.remove();
+    try {
+      await flight.remove(); 
+    } catch (err) {
+      console.error("Error removing flight:", err);
+      return res.status(500).json({
+        message: "Error while removing flight",
+        data: null,
+      });
+    }
 
     return res.status(200).json({
       message: "Flight deleted successfully",
