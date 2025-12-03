@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const cleanupFlightBookings = require("../middleware/flightBookingCleanup");
+
 const flightModel = new mongoose.Schema(
   {
     airline: {
@@ -53,4 +55,7 @@ const flightModel = new mongoose.Schema(
   },
   { timestamps: false }
 );
+
+cleanupFlightBookings(flightModel);
+
 module.exports = mongoose.model("Flights", flightModel);
